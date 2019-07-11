@@ -7,34 +7,37 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    a=os.environ['Authorization']
-    return "นางสาวอภิญญา จันทเสน เลขที่ 30 ชั้น ม.4/6"
+a=os.environ['Authorization']
+return "นางสาวอภิญญา จันทเสน เลขที่ 30 ชั้น ม.4/6"
 
 @app.route("/webhook", methods=['POST'])
 def webhook():
-    if request.method == 'POST':
-        return "OK"
+if request.method == 'POST':
+return "OK"
 
 @app.route('/callback', methods=['POST'])
 def callback():
-    json_line = request.get_json()
-    json_line = json.dumps(json_line)
-    decoded = json.loads(json_line)
-    user = decoded["events"][0]['replyToken']
-    userText = decoded["events"][0]['message']['text']
+json_line = request.get_json()
+json_line = json.dumps(json_line)
+decoded = json.loads(json_line)
+user = decoded["events"][0]['replyToken']
+userText = decoded["events"][0]['message']['text']
     #sendText(user,userText)
-    if (userText == 'สวัสดี') :
-        sendText(user,'เออ! ค่ะ')
-    elif (userText == 'ไปล่ะ') :
-        sendText(user,'บาย')
-    else :
-        sendText(user,'ไม่เข้าใจ')
+    
+    if (userText == 'กินข้าวหรือยัง') :
 
-    return '',200
+       sendText(user,'กินแล้ว')
+    elif (userText == 'ไปเที่ยวกันไหม') :
+       
+       sendText(user, 'ไปค่ะ')
+    else :
+     sendText(user,'พิมพ์ไลน์มาค่ะ')
+
+return '',200
 
 def sendText(user, text):
-  LINE_API = 'https://api.line.me/v2/bot/message/reply'
-  headers = {
+LINE_API = 'https://api.line.me/v2/bot/message/reply'
+headers = {
     'Content-Type': 'application/json; charset=UTF-8',
     'Authorization': os.environ['Authorization']    # ตั้ง Config vars ใน heroku พร้อมค่า Access token
   }
